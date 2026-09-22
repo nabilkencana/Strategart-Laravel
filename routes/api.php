@@ -88,6 +88,7 @@
 |
 */
 
+use App\Http\Controllers\Api\GuruController;
 use App\Http\Controllers\Api\KartuPelajarController;
 use App\Http\Controllers\Api\KelasController;
 use App\Http\Controllers\Api\SiswaController;
@@ -106,3 +107,6 @@ Route::apiResource('siswa', SiswaController::class);
 
 // CRUD Kartu Pelajar: GET|POST /kartu-pelajar, GET|PUT|PATCH|DELETE /kartu-pelajar/{kartu_pelajar}
 Route::apiResource('kartu-pelajar', KartuPelajarController::class);
+
+// CRUD Guru: GET|POST /guru, GET|PUT|PATCH|DELETE /guru/{guru}
+Route::apiResource('guru', GuruController::class);
