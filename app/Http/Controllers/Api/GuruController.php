@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Guru;
-use Illuminate\Http\Request;    
-use App\Http\Controllers\Controller;    
+use Illuminate\Http\Request;
 
 class GuruController extends Controller
 {
@@ -14,10 +14,12 @@ class GuruController extends Controller
     public function index()
     {
         $guru = Guru::all();
+
         return response()->json([
             'success' => true,
-            'message' => 'Data guru berhasil diambil!'
-        ],200);
+            'message' => 'Data guru berhasil diambil!',
+            'data' => $guru,
+        ], 200);
     }
 
     /**
@@ -39,7 +41,8 @@ class GuruController extends Controller
             'email' => 'required|string|max:255|unique:gurus,email',
             'no_hp' => 'required|string|max:255|unique:gurus,no_hp',
             'password' => 'required|string|max:255',
-            'foto' => 'required|string|max:255',
+            'foto' => 'nullable|string|max:255',
+            'keahlian' => 'required|in:Teknik Informatika,Akuntansi,Administrasi Bisnis,Desain Grafis',
         ]);
 
         $guru = Guru::create($validated);
@@ -47,7 +50,7 @@ class GuruController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data guru berhasil ditambahkan!',
-            'data' => $guru
+            'data' => $guru,
         ], 201);
     }
 
@@ -57,7 +60,7 @@ class GuruController extends Controller
     public function show(string $id)
     {
         $guru = Guru::find($id);
-        if (!$guru) {
+        if (! $guru) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data guru tidak ditemukan!',
@@ -67,7 +70,7 @@ class GuruController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data guru berhasil diambil!',
-            'data' => $guru
+            'data' => $guru,
         ]);
     }
 
@@ -85,7 +88,7 @@ class GuruController extends Controller
     public function update(Request $request, string $id)
     {
         $guru = Guru::find($id);
-        if (!$guru) {
+        if (! $guru) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data guru tidak ditemukan!',
@@ -93,12 +96,13 @@ class GuruController extends Controller
         }
 
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'nik' => 'required|string|max:255|unique:gurus,nik,' . $guru->id,
-            'email' => 'required|string|max:255|unique:gurus,email,' . $guru->id,
-            'no_hp' => 'required|string|max:255|unique:gurus,no_hp,' . $guru->id,
-            'password' => 'required|string|max:255',
-            'foto' => 'required|string|max:255',
+            'nama' => 'sometimes|required|string|max:255',
+            'nik' => 'sometimes|required|string|max:255|unique:gurus,nik,'.$guru->id,
+            'email' => 'sometimes|required|string|max:255|unique:gurus,email,'.$guru->id,
+            'no_hp' => 'sometimes|required|string|max:255|unique:gurus,no_hp,'.$guru->id,
+            'password' => 'sometimes|required|string|max:255',
+            'foto' => 'nullable|string|max:255',
+            'keahlian' => 'sometimes|required|in:Teknik Informatika,Akuntansi,Administrasi Bisnis,Desain Grafis',
         ]);
 
         $guru->update($validated);
@@ -106,7 +110,7 @@ class GuruController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data guru berhasil diupdate!',
-            'data' => $guru
+            'data' => $guru,
         ]);
     }
 
@@ -116,7 +120,7 @@ class GuruController extends Controller
     public function destroy(string $id)
     {
         $guru = Guru::find($id);
-        if (!$guru) {
+        if (! $guru) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data guru tidak ditemukan!',
