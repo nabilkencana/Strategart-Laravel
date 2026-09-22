@@ -86,6 +86,38 @@
 | DELETE /api/kartu-pelajar/{id}     Hapus kartu
 |   Response 200: { "message": "Kartu pelajar dihapus" }
 |
+|--------------------------------------------------------------------------
+| GURU
+|--------------------------------------------------------------------------
+| GET    /api/guru                   List semua guru
+|   Response 200: { success: true, message: "...", data: [...] }
+|
+| POST   /api/guru                   Tambah guru baru
+|   Body: {
+|     "nama": "Pak Ahmad",          // required, string, max:255
+|     "nik": "3201012345670001",    // required, string, max:255, unique
+|     "email": "ahmad@sekolah.sch.id", // required, string, max:255, unique
+|     "no_hp": "081234567890",      // required, string, max:255, unique
+|     "password": "password123",    // required, string, max:255
+|     "foto": "ahmad.jpg",          // nullable, string, max:255
+|     "keahlian": "Teknik Informatika" // required, in:Teknik Informatika,Akuntansi,Administrasi Bisnis,Desain Grafis
+|   }
+|   Response 201: { success: true, message: "...", data: {...} }
+|   cURL:
+|   curl -X POST http://localhost:8000/api/guru \
+|     -H "Content-Type: application/json" \
+|     -d '{"nama":"Pak Ahmad","nik":"3201012345670001","email":"ahmad@sekolah.sch.id","no_hp":"081234567890","password":"password123","keahlian":"Teknik Informatika"}'
+|
+| GET    /api/guru/{id}              Detail 1 guru
+|   Response 200: { success: true, message: "...", data: {...} } | 404 jika tidak ada
+|
+| PUT    /api/guru/{id}              Update guru (bisa juga PATCH, field optional)
+|   Body: { "nama": "Pak Ahmad M.Kom", "keahlian": "Teknik Informatika" }
+|   Response 200: { success: true, message: "...", data: {...} }
+|
+| DELETE /api/guru/{id}              Hapus guru
+|   Response 200: { success: true, message: "Data guru berhasil dihapus!" }
+|
 */
 
 use App\Http\Controllers\Api\GuruController;
